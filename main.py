@@ -1,18 +1,10 @@
 import pyautogui
 import cv2 as cv
 import numpy as np
-from Button import Button
 import time
+from Button import Button
 
 print(pyautogui.size())
-
-pimg = pyautogui.screenshot()
-print(pimg)
-
-open_cv_image = np.array(pimg)
-
-# Convert RGB to BGR
-open_cv_image = open_cv_image[:, :, ::-1].copy()
 
 temp1 = list(pyautogui.locateAllOnScreen('res/buOffensive.PNG'))
 temp2 = list(pyautogui.locateAllOnScreen('res/buDefensive.PNG'))
@@ -37,10 +29,14 @@ for b in temp3:
 
 offensivButtons[1].click()
 
+priorityOrder = [defensivButtons[5], defensivButtons[3], defensivButtons[4], offensivButtons[5], offensivButtons[4],
+                 offensivButtons[2], miscButtons[0], defensivButtons[2], miscButtons[1], offensivButtons[1]]
+
 while True:
     time.sleep(0.02)
-    if not offensivButtons[1].is_on_cooldown():
-        offensivButtons[1].click()
-
+    for bu in priorityOrder:
+        if not bu.is_on_cooldown():
+            bu.click()
+            break
 
 print("end")
